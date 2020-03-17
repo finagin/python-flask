@@ -1,6 +1,6 @@
 import json
 import os
-import postgresql
+# import postgresql
 import sqlite3
 from flask import Flask, escape, request, send_file
 
@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 table = 'requests'
 
-print(os.getenv('DATABASE_URL'))
+print(os.environ.get('DATABASE_URL', None))
 
 # db = postgresql.open(os.getenv('DATABASE_URL'))
 #

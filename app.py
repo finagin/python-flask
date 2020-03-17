@@ -15,12 +15,12 @@ logger.info('%s', 'Start App', extra=d)
 
 table = 'requests'
 
+logger.warning('%s', os.getenv('DATABASE_URL'), extra=d)
+
 db = postgresql.open(os.getenv('DATABASE_URL'))
 
 try:
-    db.execute(f"""CREATE TABLE {table}
-                    (data text, args text)
-                """)
+    db.execute(f"CREATE TABLE {table} (data text, args text)")
 except:
     logger.warning('table "%s" already exists', table, extra=d)
 
@@ -48,4 +48,3 @@ def data():
     requests = db.query(f"select * from {table}")
 
     return json.dumps(requests)
-

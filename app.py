@@ -11,9 +11,10 @@ d = {'clientip': '192.168.0.1', 'user': 'fbloggs'}
 logger = logging.getLogger('tcpserver')
 logger.info('%s', 'Start App', extra=d)
 
+database = 'db.sqlite3'
 table = 'requests'
 
-conn = sqlite3.connect("db.sqlite3")
+conn = sqlite3.connect(database)
 try:
     cursor = conn.cursor()
     cursor.execute(f"""CREATE TABLE {table}
@@ -28,7 +29,7 @@ finally:
 
 @app.route('/', methods=['GET', 'POST'])
 def hello():
-    conn = sqlite3.connect("mydatabase.sqlite")
+    conn = sqlite3.connect(database)
     cursor = conn.cursor()
 
     try:
@@ -54,13 +55,13 @@ def hello():
 
 @app.route('/download')
 def download_file():
-    path = "./db.sqlite3"
+    path = f"./{database}"
     return send_file(path, as_attachment=True)
 
 
 @app.route('/data')
 def data():
-    conn = sqlite3.connect("mydatabase.sqlite")
+    conn = sqlite3.connect(database)
     cursor = conn.cursor()
     cursor.execute(f"select * from {table}")
     data = cursor.fetchall()

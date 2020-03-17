@@ -48,6 +48,5 @@ def hello():
         logger.warning('Can\'t insert into "%s"', table, extra=d)
 
     return json.dump({
-        'data': request.data,
-        'args': request.args,
+        'status': 'Ok',
     })

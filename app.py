@@ -9,13 +9,18 @@ app = Flask(__name__)
 table = 'requests'
 
 conn = psycopg2.connect(os.environ['DATABASE_URL'], sslmode='require')
-
-try:
-    cursor = conn.cursor()
-    cursor.execute(f"CREATE TABLE {table} (data text, args text)")
-    conn.commit()
-except:
-    print('error')
+#
+# try:
+#     cursor = conn.cursor()
+#
+#     try:
+#         cursor.execute(f"CREATE TABLE {table} (data text, args text)")
+#     except Exception as e:
+#         cursor.close()
+#     else:
+#         conn.commit()
+# except:
+#     print('error')
 
 
 @app.route('/', methods=['GET', 'POST'])

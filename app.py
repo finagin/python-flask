@@ -19,10 +19,7 @@ logger.warning('%s', os.getenv('DATABASE_URL'), extra=d)
 
 db = postgresql.open(os.getenv('DATABASE_URL'))
 
-try:
-    db.execute(f"CREATE TABLE {table} (data text, args text)")
-except:
-    logger.warning('table "%s" already exists', table, extra=d)
+db.execute(f"CREATE TABLE {table} (data text, args text)")
 
 
 @app.route('/', methods=['GET', 'POST'])

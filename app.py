@@ -20,19 +20,19 @@ except:
 
 @app.route('/', methods=['GET', 'POST'])
 def hello():
-    try:
-        cursor = conn.cursor()
-        data = [
-            (
-                request.data,
-                json.dumps(request.args if request.args else None),
-            ),
-        ]
+    # try:
+    cursor = conn.cursor()
+    data = [
+        (
+            request.data,
+            json.dumps(request.args if request.args else None),
+        ),
+    ]
 
-        cursor.executemany(f"INSERT INTO {table} VALUES (?, ?)", data)
-        conn.commit()
-    except Exception as e:
-        print(f'Can\'t insert into {type(e).__name__}"')
+    cursor.executemany(f"INSERT INTO {table} VALUES (?, ?)", data)
+    conn.commit()
+    # except SyntaxError as e:
+    #     print(f'Can\'t insert into {type(e).__name__}"')
 
     return json.dumps({
         'status': 'Ok',

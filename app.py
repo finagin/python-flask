@@ -25,14 +25,14 @@ def hello():
         data = [
             (
                 request.data,
-                json.dumps(request.args),
+                json.dumps(request.args if request.args or None),
             ),
         ]
 
         cursor.executemany(f"INSERT INTO {table} VALUES (?, ?)", data)
         conn.commit()
-    except:
-        print('Can\'t insert into "%s"')
+    except Exception as e:
+        print(f'Can\'t insert into {type(e).__name__}"')
 
     return json.dumps({
         'data': request.data,

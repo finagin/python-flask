@@ -11,26 +11,32 @@ table = 'requests'
 conn = psycopg2.connect(os.environ['DATABASE_URL'], sslmode='require')
 
 try:
-    conn.execute(f"CREATE TABLE {table} (data text, args text)")
+    cursor = conn.cursor()
+    cursor.execute(f"CREATE TABLE {table} (data text, args text)")
+    conn.commit()
 except:
     print('error')
 
 
 @app.route('/', methods=['GET', 'POST'])
 def hello():
-    # ins = db.prepare(f"INSERT INTO {table} VALUES ($1, $2)")
+    try:
+        cursor = conn.cursor()
+        data = [
+            (
+                request.data,
+                json.dumps(request.args),
+            ),
+        ]
 
-    # try:
-    # ins(
-    #     request.data,
-    #     json.dumps(request.args)
-    # )
-    # except:
-    #     logger.warning('Can\'t json dump', extra=d)
-    #     logger.warning('Can\'t insert into "%s"', table, extra=d)
+        cursor.executemany(f"INSERT INTO {table} VALUES (?, ?)", data)
+        conn.commit()
+    except:
+        print('Can\'t insert into "%s"')
 
     return json.dumps({
-        'status': 'Ok',
+        'data': request.data,
+        'args': request.args,
     })
 
 #

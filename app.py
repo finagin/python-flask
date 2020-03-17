@@ -15,7 +15,7 @@ logger.info('%s', 'Start App', extra=d)
 
 table = 'requests'
 
-logger.warning('%s', os.getenv('DATABASE_URL'), extra=d)
+print(os.getenv('DATABASE_URL'))
 
 db = postgresql.open(os.getenv('DATABASE_URL'))
 

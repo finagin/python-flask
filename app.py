@@ -1,6 +1,6 @@
 import json
 import os
-import postgresql
+import psycopg2
 import sqlite3
 from flask import Flask, escape, request, send_file
 
@@ -8,9 +8,12 @@ app = Flask(__name__)
 
 table = 'requests'
 
-db = postgresql.open(os.environ.get('DATABASE', None))
+conn = psycopg2.connect(os.environ['DATABASE_URL'], sslmode='require')
 
-db.execute(f"CREATE TABLE {table} (data text, args text)")
+try:
+    conn.execute(f"CREATE TABLE {table} (data text, args text)")
+except:
+    print('error')
 
 
 @app.route('/', methods=['GET', 'POST'])

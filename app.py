@@ -35,8 +35,7 @@ def hello():
         print(f'Can\'t insert into {type(e).__name__}"')
 
     return json.dumps({
-        'data': request.data,
-        'args': request.args,
+        'status': 'Ok',
     })
 
 #

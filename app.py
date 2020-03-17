@@ -29,7 +29,7 @@ def hello():
         ),
     ]
 
-    cursor.executemany(f"INSERT INTO {table} VALUES (?, ?)", data)
+    cursor.executemany(f"INSERT INTO {table} VALUES (%s, %s)", data)
     conn.commit()
     # except SyntaxError as e:
     #     print(f'Can\'t insert into {type(e).__name__}"')

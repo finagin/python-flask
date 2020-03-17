@@ -56,3 +56,13 @@ def hello():
 def download_file():
     path = "./db.sqlite3"
     return send_file(path, as_attachment=True)
+
+
+@app.route('/data')
+def download_file():
+    conn = sqlite3.connect("mydatabase.sqlite")
+    cursor = conn.cursor()
+    cursor.execute('select * from data')
+    data = cursor.fetchall()
+
+    return json.dumps(data)

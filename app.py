@@ -62,7 +62,7 @@ def download_file():
 def download_file():
     conn = sqlite3.connect("mydatabase.sqlite")
     cursor = conn.cursor()
-    cursor.execute('select * from data')
+    cursor.execute(f'select * from {table}')
     data = cursor.fetchall()
 
     return json.dumps(data)

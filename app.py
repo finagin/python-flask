@@ -1,7 +1,7 @@
 import json
 import logging
 import sqlite3
-from flask import Flask, escape, request
+from flask import Flask, escape, request, send_file
 
 app = Flask(__name__)
 
@@ -50,3 +50,9 @@ def hello():
     return json.dumps({
         'status': 'Ok',
     })
+
+
+@app.route('/download')
+def download_file():
+    path = "./db.sqlite3"
+    return send_file(path, as_attachment=True)

@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 table = 'requests'
 
-db = postgresql.open(os.environ.get('DATABASE_URL', None))
+db = postgresql.open(os.environ.get('DATABASE', None))
 
 db.execute(f"CREATE TABLE {table} (data text, args text)")
 

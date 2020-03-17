@@ -59,10 +59,10 @@ def download_file():
 
 
 @app.route('/data')
-def download_file():
+def data():
     conn = sqlite3.connect("mydatabase.sqlite")
     cursor = conn.cursor()
-    cursor.execute(f'select * from {table}')
+    cursor.execute(f"select * from {table}")
     data = cursor.fetchall()
 
     return json.dumps(data)

@@ -64,6 +64,10 @@ def data():
     conn = sqlite3.connect(database)
     cursor = conn.cursor()
     cursor.execute(f"select * from {table}")
-    data = cursor.fetchall()
 
-    return json.dumps(data)
+    r = [dict((cursor.description[i][0], value) for i, value in enumerate(row)) for row in cursor.fetchall()]
+
+    cursor.connection.close()
+
+    return json.dumps(r if r else None)
+

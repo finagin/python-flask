@@ -1,5 +1,7 @@
 import json
 import logging
+import os
+import postgresql
 import sqlite3
 from flask import Flask, escape, request, send_file
 
@@ -11,63 +13,39 @@ d = {'clientip': '192.168.0.1', 'user': 'fbloggs'}
 logger = logging.getLogger('tcpserver')
 logger.info('%s', 'Start App', extra=d)
 
-database = 'db.sqlite3'
 table = 'requests'
 
-conn = sqlite3.connect(database)
+db = postgresql.open(os.getenv('DATABASE_URL'))
+
 try:
-    cursor = conn.cursor()
-    cursor.execute(f"""CREATE TABLE {table}
-                       (data text, args text)
-                   """)
-    conn.commit()
-except sqlite3.OperationalError:
+    db.execute(f"""CREATE TABLE {table}
+                    (data text, args text)
+                """)
+except:
     logger.warning('table "%s" already exists', table, extra=d)
-finally:
-    conn.close()
 
 
 @app.route('/', methods=['GET', 'POST'])
 def hello():
-    conn = sqlite3.connect(database)
-    cursor = conn.cursor()
+    ins = db.prepare(f"INSERT INTO {table} VALUES ($1, $2)")
 
-    try:
-        try:
-            data = [
-                (
-                    request.data,
-                    json.dumps(request.args),
-                ),
-            ]
-        except:
-            logger.warning('Can\'t json dump', extra=d)
-
-        cursor.executemany(f"INSERT INTO {table} VALUES (?, ?)", data)
-        conn.commit()
-    except:
-        logger.warning('Can\'t insert into "%s"', table, extra=d)
+    # try:
+    ins(
+        request.data,
+        json.dumps(request.args)
+    )
+    # except:
+    #     logger.warning('Can\'t json dump', extra=d)
+    #     logger.warning('Can\'t insert into "%s"', table, extra=d)
 
     return json.dumps({
         'status': 'Ok',
     })
 
 
-@app.route('/download')
-def download_file():
-    path = f"./{database}"
-    return send_file(path, as_attachment=True)
-
-
 @app.route('/data')
 def data():
-    conn = sqlite3.connect(database)
-    cursor = conn.cursor()
-    cursor.execute(f"select * from {table}")
+    requests = db.query(f"select * from {table}")
 
-    r = [dict((cursor.description[i][0], value) for i, value in enumerate(row)) for row in cursor.fetchall()]
-
-    cursor.connection.close()
-
-    return json.dumps(r if r else None)
+    return json.dumps(requests)
 

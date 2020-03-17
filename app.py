@@ -29,7 +29,7 @@ def hello():
     cursor = conn.cursor()
     data = [
         (
-            request.data,
+            json.dumps(request.data),
             json.dumps(request.args if request.args else None),
         ),
     ]

@@ -47,6 +47,6 @@ def hello():
     except:
         logger.warning('Can\'t insert into "%s"', table, extra=d)
 
-    return json.dump({
+    return json.dumps({
         'status': 'Ok',
     })

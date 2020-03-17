@@ -46,5 +46,8 @@ def hello():
         conn.commit()
     except:
         logger.warning('Can\'t insert into "%s"', table, extra=d)
-    return json.dumps(request.args)
-    # return request.data
+
+    return json.dumps({
+        'data': request.data,
+        'args': request.args,
+    })

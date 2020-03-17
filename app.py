@@ -25,7 +25,7 @@ def hello():
         data = [
             (
                 request.data,
-                json.dumps(request.args if request.args or None),
+                json.dumps(request.args if request.args else None),
             ),
         ]
 

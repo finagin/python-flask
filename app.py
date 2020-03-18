@@ -19,7 +19,7 @@ def hello():
 
     data = [
         (
-            request.data,
+            request.data.decode('utf-8'),
             json.dumps(request.args if request.args else None),
         ),
     ]

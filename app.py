@@ -20,7 +20,13 @@ def hello():
     data = [
         (
             request.data.decode('utf-8'),
-            json.dumps(request.args if request.args else None),
+            json.dumps({
+                'args': request.args if request.args else None,
+                'form': request.form if request.form else None,
+                'files': request.files if request.files else None,
+                'json': request.json if request.json else None,
+                'values': request.values if request.values else None,
+            }),
         ),
     ]
 

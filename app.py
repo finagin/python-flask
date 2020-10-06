@@ -5,8 +5,10 @@ import os
 import psycopg2
 import sqlite3
 from flask import Flask, escape, request, send_file
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 table = 'requests'
 
